@@ -2,9 +2,9 @@ let operator = {
     type: "",
     isClicked: false,
 }
-
+let equalSignIsClicked = false
 let num1 = ""
-let num2 = "";
+let num2 = ""
 
 
 function add(num1 , num2){
@@ -35,57 +35,82 @@ function operate(num1 , operator , num2){
     }else if (operator == "*" || operator == "x"){
         operation = multiply
     }
-
     return limitDecimalNumbers(operation(num1 , num2))
 }
+
 displayScreenText = document.querySelector(".text")
+
 clearButton = document.querySelector(".clear-btn")
 numbers = document.querySelectorAll(".number-btn")
 operators = document.querySelectorAll(".operator-btn")
 equalSign = document.querySelector(".equal-btn")
+decimalPoint = document.querySelector(".decimal-point-btn")
 
 clearButton.addEventListener("click" , (event) => {
     clear()
 })
 
 numbers.forEach((numberButton) =>{
+
     numberButton.addEventListener("click" , (event) =>{
-        targetContent = event.target.textContent
-        if(!(operator.isClicked)){
-            num1 += targetContent
-            console.log(num1)
-            displayScreenText.textContent = num1
-        }else{
-            num2 += targetContent
+        targetNumber = event.target.textContent
+
+        if (equalSignIsClicked){
+            equalSignIsClicked = false
+            num1 = "" 
+        } 
+
+        if(operator.isClicked){// if the user clicked any operator then start adding the numbers to num2 instead on num1
+            num2 += targetNumber
             displayScreenText.textContent = num2    
+
+        }else{
+            num1 += targetNumber
+            displayScreenText.textContent = num1
         }
         
     })
 })
 
 operators.forEach((operatorButton) => {
+
     operatorButton.addEventListener("click" , (event) =>{
             operator.type = event.target.textContent;
             operator.isClicked = true
-        if (num2){
+
+        if (num2){ // if the user clicked an operator after entering the two numbers then evaluate the result 
             let clickEvent = new Event("click")
             equalSign.dispatchEvent(clickEvent)
+            equalSignIsClicked = false // reverting it from true to false because we forced the event 
+
             prevResult = displayScreenText.textContent
-            num1 = prevResult
-            
+            num1 = prevResult // if the user wants to do further operations on the same result 
         }
     })
-    })
+})
 equalSign.addEventListener("click", (event) =>{
+
     if(num1 && num2 && operator.type){
+
         result = operate(Number(num1) , operator.type , Number(num2))
         clear()
 
         displayScreenText.textContent = result
+        num1 = result // ii the user wants to do further operations on the same result
+        equalSignIsClicked = true
     }
 })
 
+decimalPoint.addEventListener("click", (event) =>{
+    if (!displayScreenText.textContent.includes(".") && !num2){ // we are basically checking if the user did not enter any decimal points before and still entering the first number  
+        num1 += "."
+        displayScreenText.textContent = num1
 
+    }else if (!displayScreenText.textContent.includes(".")){ // the user is still entering the second number
+        num2 += "."
+        displayScreenText.textContent = num2
+    }
+})
 
 
 
@@ -99,6 +124,7 @@ function clear(){
     num1  = ""
     num2  = ""
     displayScreenText.textContent = ""
+    equalSignIsClicked = false
     operator.isClicked = false
     operator.type = ""
 }
