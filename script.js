@@ -46,8 +46,10 @@ function operate(num1 , operator , num2){
 
 displayScreenText = document.querySelector(".text")
 topScreenText = document.querySelector(".top-text")
-delButton = document.querySelector(".delete-btn")
+
 clearButton = document.querySelector(".clear-btn")
+delButton = document.querySelector(".delete-btn")
+
 numbers = document.querySelectorAll(".number-btn")
 operators = document.querySelectorAll(".operator-btn")
 equalSign = document.querySelector(".equal-btn")
@@ -63,7 +65,7 @@ delButton.addEventListener("click" , (event) =>{
     } else{
         num1 = num1.slice(0,-1)
         updateDisplayScreen(num1)
-        updateTopDisplay(num1 + operator.type)
+        updateTopDisplay(num1 + " " + operator.type)
     }
 })
 numbers.forEach((numberButton) =>{
@@ -82,7 +84,7 @@ numbers.forEach((numberButton) =>{
         }else{
             num1 += targetNumber
             updateDisplayScreen(num1)
-            updateTopDisplay(num1 + operator.type)
+            updateTopDisplay(num1 + " " + operator.type)
         }
         
     })
@@ -95,7 +97,7 @@ operators.forEach((operatorButton) => {
             operator.type = event.target.textContent;
             operator.isClicked = true 
             focusCurrentOperator(event)
-            updateTopDisplay(num1 + operator.type)
+            updateTopDisplay(num1 + " " + operator.type)
         }
 
         if (num1 && num2){ // if the user clicked an operator after entering the two numbers then evaluate the result 
@@ -110,9 +112,12 @@ equalSign.addEventListener("click", (event) =>{
 
     if(num1 && num2 && operator.type){
         result = operate(Number(num1) , operator.type , Number(num2))
+        topText = `${num1} ${operator.type} ${num2} =`
         clear()
 
         updateDisplayScreen(result)
+        updateTopDisplay(topText)
+        // making the result a string instead of a number because otherwise the delete button won't work
         num1 = String(result) // if the user wants to do further operations on the same result
         equalSignIsClicked = true
     }
@@ -122,6 +127,7 @@ decimalPoint.addEventListener("click", (event) =>{
     if (!displayScreenText.textContent.includes(".") && !num2){ // we are basically checking if the user did not enter any decimal points before and still entering the first number  
         num1 += "."
         updateDisplayScreen(num1)
+        updateTopDisplay(num1 + " " + operator.type)
 
     }else if (!displayScreenText.textContent.includes(".")){ // the user is still entering the second number
         num2 += "."
