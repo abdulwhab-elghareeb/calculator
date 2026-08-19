@@ -45,6 +45,7 @@ function operate(num1 , operator , num2){
 }
 
 displayScreenText = document.querySelector(".text")
+topScreenText = document.querySelector(".top-text")
 delButton = document.querySelector(".delete-btn")
 clearButton = document.querySelector(".clear-btn")
 numbers = document.querySelectorAll(".number-btn")
@@ -62,6 +63,7 @@ delButton.addEventListener("click" , (event) =>{
     } else{
         num1 = num1.slice(0,-1)
         updateDisplayScreen(num1)
+        updateTopDisplay(num1 + operator.type)
     }
 })
 numbers.forEach((numberButton) =>{
@@ -80,6 +82,7 @@ numbers.forEach((numberButton) =>{
         }else{
             num1 += targetNumber
             updateDisplayScreen(num1)
+            updateTopDisplay(num1 + operator.type)
         }
         
     })
@@ -92,6 +95,7 @@ operators.forEach((operatorButton) => {
             operator.type = event.target.textContent;
             operator.isClicked = true 
             focusCurrentOperator(event)
+            updateTopDisplay(num1 + operator.type)
         }
 
         if (num1 && num2){ // if the user clicked an operator after entering the two numbers then evaluate the result 
@@ -108,7 +112,7 @@ equalSign.addEventListener("click", (event) =>{
         result = operate(Number(num1) , operator.type , Number(num2))
         clear()
 
-        updateDisplayScreen(result) 
+        updateDisplayScreen(result)
         num1 = String(result) // if the user wants to do further operations on the same result
         equalSignIsClicked = true
     }
@@ -122,6 +126,7 @@ decimalPoint.addEventListener("click", (event) =>{
     }else if (!displayScreenText.textContent.includes(".")){ // the user is still entering the second number
         num2 += "."
         updateDisplayScreen(num2)
+        
     }
 })
 
@@ -137,6 +142,7 @@ function clear(){
     num1  = ""
     num2  = ""
     displayScreenText.textContent = ""
+    topScreenText.textContent = ""
     equalSignIsClicked = false
     operator.isClicked = false
     operator.type = ""
@@ -145,6 +151,10 @@ function clear(){
 function updateDisplayScreen(content){
     displayScreenText.textContent = content
 }
+function updateTopDisplay(content){
+    topScreenText.textContent = content
+}
+
 
 function focusCurrentOperator(event=""){
     operators.forEach((operator) =>{
