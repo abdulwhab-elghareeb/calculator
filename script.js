@@ -23,53 +23,60 @@ function reminder(num , num2){
 }
 
 function operate(num1 , operator , num2){
+    num1 = Number(num1)
+    num2 = Number(num2)
     let operation = add
-    
-    if (operator == "-"){
-        operation = subtract
+    switch(operator){
+        case "+":
+            operation = add
+            break;
+        case "-":
+            operation = subtract
+            break;
+        case "x":
+            operation = multiply
+            break;
 
-    }else if (operator == "/"){
-        if (num1 == 0|| num2 == 0){
-            return "Error"
-        }
-        operation = divide
-
-    }else if (operator == "*" || operator == "x"){
-        operation = multiply
-
-    }else if (operator == "%"){
-        operation = reminder
+        case "/":
+            if (num1 === 0 || num2 === 0) return "Error"
+            operation = divide
+            break
+        case "%":
+            operation = reminder
     }
     return limitDecimalNumbers(operation(num1 , num2))
 }
+            
 
-displayScreenText = document.querySelector(".text")
-topScreenText = document.querySelector(".top-text")
+const currentDisplayText = document.querySelector(".text")
+const topScreenText = document.querySelector(".top-text")
 
-allButtons = Array.from(document.querySelectorAll("button"))
+const allButtons = Array.from(document.querySelectorAll("button"))
 
-clearButton = document.querySelector(".clear-btn")
-delButton = document.querySelector(".delete-btn")
+const clearButton = document.querySelector(".clear-btn")
+const delButton = document.querySelector(".delete-btn")
 
-numbers = document.querySelectorAll(".number-btn")
-operators = document.querySelectorAll(".operator-btn")
-equalSign = document.querySelector(".equal-btn")
-decimalPoint = document.querySelector(".decimal-point-btn")
+const numberButtons = document.querySelectorAll(".number-btn")
+const operatorButtons = document.querySelectorAll(".operator-btn")
+const equalSign = document.querySelector(".equal-btn")
+const decimalPoint = document.querySelector(".decimal-point-btn")
 
 clearButton.addEventListener("click" , (event) => {
     clear()
 })
+
 delButton.addEventListener("click" , (event) =>{
     if(operator.isClicked){
-        num2 = num2.slice(0, -1)
+        num2 = num2.toString().slice(0, -1)
         updateDisplayScreen(num2)
     } else{
-        num1 = num1.slice(0,-1)
+        num1 = num1.toString().slice(0,-1)
         updateDisplayScreen(num1)
         updateTopDisplay(num1 + " " + operator.type)
     }
 })
-numbers.forEach((numberButton) =>{
+
+numberButtons.forEach((numberButton) =>{
     numberButton.addEventListener("click" , (event) =>{
         targetNumber = event.target.textContent
 
@@ -90,13 +97,13 @@ numbers.forEach((numberButton) =>{
     })
 })
 
-operators.forEach((operatorButton) => {
+operatorButtons.forEach((operatorButton) => {
 
     operatorButton.addEventListener("click" , (event) =>{
 
         if (num1 && num2){ // if the user clicked an operator after entering the two numbers then evaluate the result
             let clickEvent = new Event("click")
-            equalSign.dispatchEvent(clickEvent)
+            equalSign.click()
             equalSignIsClicked = false // reverting it from true to false because we forced the event 
         }
 
@@ -104,6 +111,7 @@ operators.forEach((operatorButton) => {
             operator.type = event.target.textContent;
             operator.isClicked = true 
             focusCurrentOperator(event)
+
             updateTopDisplay(num1 + " " + operator.type)
         }
     })
@@ -111,25 +119,26 @@ operators.forEach((operatorButton) => {
 equalSign.addEventListener("click", (event) =>{
 
     if(num1 && num2 && operator.type){
-        result = operate(Number(num1) , operator.type , Number(num2))
+        result = operate(num1 , operator.type ,num2)
         topText = `${num1} ${operator.type} ${num2} =`
         clear()
 
         updateDisplayScreen(result)
         updateTopDisplay(topText)
-        // making the result a string instead of a number because otherwise the delete button won't work
-        num1 = String(result) // if the user wants to do further operations on the same result
+
+        num1 = result // if the user wants to do further operations on the same result
+        
         equalSignIsClicked = true
     }
 })
 
 decimalPoint.addEventListener("click", (event) =>{
-    if (!displayScreenText.textContent.includes(".") && !num2){ // we are basically checking if the user did not enter any decimal points before and still entering the first number  
+    if (!currentDisplayText.textContent.includes(".") && !num2){ // we are basically checking if the user did not enter any decimal points before and still entering the first number  
         num1 += "."
         updateDisplayScreen(num1)
         updateTopDisplay(num1 + " " + operator.type)
 
-    }else if (!displayScreenText.textContent.includes(".")){ // the user is still entering the second number
+    }else if (!currentDisplayText.textContent.includes(".")){ // the user is still entering the second number
         num2 += "."
         updateDisplayScreen(num2)
         
@@ -138,7 +147,6 @@ decimalPoint.addEventListener("click", (event) =>{
 
 //keyboard 
 window.addEventListener("keydown" , (event) =>{
-    let clickEvent = new Event("click")
     let buttonList = ["c" , "Backspace" , "%" , "/",
                       "7" ,     "8"     , "9" , "*", 
                       "4" ,     "5"     , "6" , "-",                            
@@ -147,13 +155,13 @@ window.addEventListener("keydown" , (event) =>{
 
 
     if (buttonList.includes(event.key)){
-        allButtons[buttonList.indexOf(event.key)].dispatchEvent(clickEvent)
+        allButtons[buttonList.indexOf(event.key)].click()
 
     }else if (event.key == "Enter"){
-        allButtons[buttonList.indexOf("=")].dispatchEvent(clickEvent)
+        allButtons[buttonList.indexOf("=")].click()
 
     }else if (event.key == "C"){
-        allButtons[buttonList.indexOf("c")].dispatchEvent(clickEvent)
+        allButtons[buttonList.indexOf("c")].click()
     }
 })
 //keyboard
@@ -166,15 +174,16 @@ function limitDecimalNumbers(number,decimalLimit=3){
 function clear(){
     num1  = ""
     num2  = ""
-    displayScreenText.textContent = ""
+    currentDisplayText.textContent = ""
     topScreenText.textContent = ""
     equalSignIsClicked = false
     operator.isClicked = false
     operator.type = ""
     focusCurrentOperator()
+
 }
 function updateDisplayScreen(content){
-    displayScreenText.textContent = content
+    currentDisplayText.textContent = content
 }
 function updateTopDisplay(content){
     topScreenText.textContent = content
@@ -182,7 +191,7 @@ function updateTopDisplay(content){
 
 
 function focusCurrentOperator(event=""){
-    operators.forEach((operator) =>{
+    operatorButtons.forEach((operator) =>{
         operator.classList.remove("active-operator")
     })
     if (operator.isClicked){
