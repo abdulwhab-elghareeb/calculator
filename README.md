@@ -1,7 +1,7 @@
 # calculator
 **Calculator made with HTML, CSS, and JavaScript**
 ## Preview 
-![Calculator Screenshot](imgs/calculatorSecond.png)
+![Calculator Screenshot](imgs/NewScreenshot.png)
 
 ## Features
 - Basic Math Operations (addition, subtraction, multiplication, division, and modulo)
