@@ -41,6 +41,7 @@ button:hover{
     border-radius: 12px;
     margin: 10px auto;
     background-color: #eaf6ff;
+    overflow: hidden;
 
 }
 .text{
