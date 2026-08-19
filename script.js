@@ -5,8 +5,6 @@ let operator = {
 let equalSignIsClicked = false
 let num1 = ""
 let num2 = ""
-let clickEvent = new Event("click")
-
 
 function add(num1 , num2){
     return num1 + num2;
@@ -97,6 +95,7 @@ operators.forEach((operatorButton) => {
     operatorButton.addEventListener("click" , (event) =>{
 
         if (num1 && num2){ // if the user clicked an operator after entering the two numbers then evaluate the result
+            let clickEvent = new Event("click")
             equalSign.dispatchEvent(clickEvent)
             equalSignIsClicked = false // reverting it from true to false because we forced the event 
         }
@@ -139,16 +138,20 @@ decimalPoint.addEventListener("click", (event) =>{
 
 //keyboard 
 window.addEventListener("keydown" , (event) =>{
+    let clickEvent = new Event("click")
     let buttonList = ["c" , "Backspace" , "%" , "/",
                       "7" ,     "8"     , "9" , "*", 
                       "4" ,     "5"     , "6" , "-",                            
                       "1" ,     "2"     , "3" , "+",
                       "00",     "0"     , "." , "="]
 
+
     if (buttonList.includes(event.key)){
         allButtons[buttonList.indexOf(event.key)].dispatchEvent(clickEvent)
+
     }else if (event.key == "Enter"){
         allButtons[buttonList.indexOf("=")].dispatchEvent(clickEvent)
+
     }else if (event.key == "C"){
         allButtons[buttonList.indexOf("c")].dispatchEvent(clickEvent)
     }
