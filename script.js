@@ -88,10 +88,13 @@ numbers.forEach((numberButton) =>{
 operators.forEach((operatorButton) => {
 
     operatorButton.addEventListener("click" , (event) =>{
+        if (num1){ // do this only if the user already entered the first number
             operator.type = event.target.textContent;
-            operator.isClicked = true
+            operator.isClicked = true 
+            focusCurrentOperator(event)
+        }
 
-        if ((num1 && num2)|| operator.type == "%"){ // if the user clicked an operator after entering the two numbers then evaluate the result 
+        if (num1 && num2){ // if the user clicked an operator after entering the two numbers then evaluate the result 
             let clickEvent = new Event("click")
             equalSign.dispatchEvent(clickEvent)
             equalSignIsClicked = false // reverting it from true to false because we forced the event 
@@ -137,8 +140,20 @@ function clear(){
     equalSignIsClicked = false
     operator.isClicked = false
     operator.type = ""
+    focusCurrentOperator()
 }
 function updateDisplayScreen(content){
     displayScreenText.textContent = content
 }
+
+function focusCurrentOperator(event=""){
+    operators.forEach((operator) =>{
+        operator.classList.remove("active-operator")
+    })
+    if (operator.isClicked){
+        event.target.classList.add("active-operator")
+    }
+
+}
+
 //helper functions
