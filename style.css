@@ -55,11 +55,8 @@ button:active{
     font-size: 30px;
     background-color:#CFD186;
 }
+.delete-btn,
 .clear-btn{
-    flex-grow: 2;
-    background-color: #e94d59;
-}
-.delete-btn{
     flex-grow: 2;
     background-color: #eb5a66;
 }
