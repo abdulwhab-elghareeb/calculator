@@ -212,29 +212,21 @@ function adjustFontSize(){
         currentDisplayText.style.fontSize = "32px"
         topScreenText.style.fontSize = "26px"
     }
-    if (currentDisplayText.textContent.length >= 23){
-        currentDisplayText.style.fontSize = "22px"
-        topScreenText.style.fontSize = "18px"
-    }
-    if (currentDisplayText.textContent.length >= 33){
-        currentDisplayText.style.fontSize = "19px"
-        topScreenText.style.fontSize = "15px"
-    }
 }
 function addToNum1(number){
-    if (num1.length < 38){
+    if (num1.length < 22){
         num1 += number
     }else {
         displayScreen.classList.add("maxLength")
-        setTimeout(() => displayScreen.classList.remove("maxLength"),300)
+        setTimeout(() => displayScreen.classList.remove("maxLength"),100)
     }
 }
 function addToNum2(number){
-    if (num2.length < 38){
+    if (num2.length < 22){
         num2 += number
     }else {
         displayScreen.classList.add("maxLength")
-        setTimeout(() => displayScreen.classList.remove("maxLength"),300)
+        setTimeout(() => displayScreen.classList.remove("maxLength"),100)
     }
 }
 //helper functions
