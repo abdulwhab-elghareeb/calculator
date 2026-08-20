@@ -49,6 +49,7 @@ function operate(num1 , operator , num2){
             
 
 const currentDisplayText = document.querySelector(".text")
+
 const topScreenText = document.querySelector(".top-text")
 
 const allButtons = Array.from(document.querySelectorAll("button"))
@@ -176,6 +177,8 @@ function clear(){
     num2  = ""
     currentDisplayText.textContent = ""
     topScreenText.textContent = ""
+    currentDisplayText.style.fontSize = "50px"
+    topScreenText.style.fontSize = "30px"
     equalSignIsClicked = false
     operator.isClicked = false
     operator.type = ""
@@ -184,9 +187,11 @@ function clear(){
 }
 function updateDisplayScreen(content){
     currentDisplayText.textContent = content
+    adjustFontSize()
 }
 function updateTopDisplay(content){
     topScreenText.textContent = content
+    adjustFontSize()
 }
 
 
@@ -199,5 +204,22 @@ function focusCurrentOperator(event=""){
     }
 
 }
-
+function adjustFontSize(){
+    if (currentDisplayText.textContent.length < 15){
+        currentDisplayText.style.fontSize = "50px"
+        topScreenText.style.fontSize = "30px"
+    }
+    if (currentDisplayText.textContent.length >= 15){
+        currentDisplayText.style.fontSize = "32px"
+        topScreenText.style.fontSize = "26px"
+    }
+    if (currentDisplayText.textContent.length >= 23){
+        currentDisplayText.style.fontSize = "22px"
+        topScreenText.style.fontSize = "18px"
+    }
+    if (currentDisplayText.textContent.length >= 33){
+        currentDisplayText.style.fontSize = "19px"
+        topScreenText.style.fontSize = "15px"
+    }
+}
 //helper functions
