@@ -47,9 +47,8 @@ function operate(num1 , operator , num2){
     return limitDecimalNumbers(operation(num1 , num2))
 }
             
-
+const displayScreen = document.querySelector(".display-screen")
 const currentDisplayText = document.querySelector(".text")
-
 const topScreenText = document.querySelector(".top-text")
 
 const allButtons = Array.from(document.querySelectorAll("button"))
@@ -86,11 +85,11 @@ numberButtons.forEach((numberButton) =>{
         } 
 
         if(operator.isClicked){// if the user clicked any operator then start adding the numbers to num2 instead on num1
-            num2 += targetNumber
+            addToNum2(targetNumber)
             updateDisplayScreen(num2)
 
         }else{
-            num1 += targetNumber
+            addToNum1(targetNumber)
             updateDisplayScreen(num1)
             updateTopDisplay(num1 + " " + operator.type)
         }
@@ -135,12 +134,12 @@ equalSign.addEventListener("click", (event) =>{
 
 decimalPoint.addEventListener("click", (event) =>{
     if (!currentDisplayText.textContent.includes(".") && !num2){ // we are basically checking if the user did not enter any decimal points before and still entering the first number  
-        num1 += "."
+        addToNum1(".")
         updateDisplayScreen(num1)
         updateTopDisplay(num1 + " " + operator.type)
 
     }else if (!currentDisplayText.textContent.includes(".")){ // the user is still entering the second number
-        num2 += "."
+        addToNum2(".")
         updateDisplayScreen(num2)
         
     }
@@ -220,6 +219,22 @@ function adjustFontSize(){
     if (currentDisplayText.textContent.length >= 33){
         currentDisplayText.style.fontSize = "19px"
         topScreenText.style.fontSize = "15px"
+    }
+}
+function addToNum1(number){
+    if (num1.length < 38){
+        num1 += number
+    }else {
+        displayScreen.classList.add("maxLength")
+        setTimeout(() => displayScreen.classList.remove("maxLength"),300)
+    }
+}
+function addToNum2(number){
+    if (num2.length < 38){
+        num2 += number
+    }else {
+        displayScreen.classList.add("maxLength")
+        setTimeout(() => displayScreen.classList.remove("maxLength"),300)
     }
 }
 //helper functions

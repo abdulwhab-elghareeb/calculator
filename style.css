@@ -116,3 +116,7 @@ button:active{
     box-shadow: 5px 5px 18px black;
     border-radius: 28px;
 }
+.maxLength{
+    background-color: red;
+    transition: 0.3s;
+}
